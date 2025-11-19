@@ -244,7 +244,7 @@
 			<key>name</key>
 			<string>report-converter</string>
 			<key>version</key>
-			<string>1.4.1</string>
+			<string>x.y.z</string>
 		</dict>
 	</dict>
 </dict>
