@@ -7,7 +7,7 @@
         "driver": {
           "name": "SAST",
           "organization": "Seqra",
-          "version": "2025.11.13.98f5209",
+          "version": "1.4.1",
           "rules": [
             {
               "id": "seqra.java.spring.xss",
