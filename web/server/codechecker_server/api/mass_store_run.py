@@ -1204,6 +1204,29 @@ class MassStoreRun:
                 severities[checker] = report.severity
         return checkers, severities
 
+    def __update_checker_severities_from_reports(self, session: DBSession):
+        """
+        Update checker severities based on severity info from reports.
+        This ensures checkers get the correct severity from SARIF/plist
+        even if they were initially created from metadata without severity.
+        """
+        # Collect severities from all added reports
+        checker_severities: Dict[Tuple[str, str], str] = {}
+        for _, report in self.__added_reports:
+            if report.severity:
+                checker = checker_name_for_report(report)
+                if checker not in checker_severities:
+                    checker_severities[checker] = report.severity
+
+        # Update checkers in database
+        for (analyzer, checker_name), sev_str in checker_severities.items():
+            sev = ttypes.Severity._NAMES_TO_VALUES.get(sev_str)
+            if sev is not None:
+                session.query(Checker) \
+                    .filter(Checker.analyzer_name == analyzer,
+                            Checker.checker_name == checker_name) \
+                    .update({"severity": sev})
+
     def __load_report_ids_for_reports_with_fake_checkers(self, session):
         """
         Transforms the __reports_with_fake_checkers data structure by loading
@@ -1723,6 +1746,11 @@ class MassStoreRun:
                         with StepLog(self._name,
                                      "Fix-up report-to-checker associations"):
                             self.__realise_fake_checkers(session)
+
+                    # Update checker severities from report data.
+                    with StepLog(self._name,
+                                 "Update checker severities from reports"):
+                        self.__update_checker_severities_from_reports(session)
 
                     self.finish_checker_run(session, run_id)
                     session.commit()
