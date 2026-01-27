@@ -249,7 +249,7 @@ class Parser(BaseParser):
         location = diag.get("location", {})
         checker_name = diag.get("check_name", UnknownChecker[1])
         analyzer_name = self.__get_analyzer_name(checker_name, metadata)
-        severity = self.get_severity(checker_name)
+        severity = diag.get("severity") or self.get_severity(checker_name)
 
         report_annotation = diag["report-annotation"] \
             if "report-annotation" in diag else None
