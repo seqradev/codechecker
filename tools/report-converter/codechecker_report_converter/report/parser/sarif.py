@@ -29,6 +29,15 @@ EXTENSION = 'sarif'
 LOG = logging.getLogger('report-converter')
 
 
+# Mapping from SARIF level (§3.27.10) to CodeChecker severity.
+# SARIF levels: "error", "warning", "note", "none"
+SARIF_LEVEL_TO_SEVERITY: Dict[str, str] = {
+    "error": "HIGH",
+    "warning": "MEDIUM",
+    "note": "LOW",
+}
+
+
 # §3.37
 class ThreadFlowInfo:
     def __init__(self):
@@ -76,6 +85,7 @@ class Parser(BaseParser):
                 rule_id = result["ruleId"]
                 message = self._process_message(
                     result["message"], rule_id, rules)  # §3.11
+                severity = self._get_severity(result, rule_id, rules)
 
                 thread_flow_info = self._process_code_flows(
                     result, rule_id, rules)
@@ -92,7 +102,8 @@ class Parser(BaseParser):
 
                     report = Report(
                         file, rng.start_line, rng.start_col,
-                        message, rule_id,  # TODO: Add severity.
+                        message, rule_id,
+                        severity=severity,
                         analyzer_name=analyzer_name,
                         analyzer_result_file_path=analyzer_result_file_path,
                         bug_path_events=bug_path_events,
@@ -130,6 +141,32 @@ class Parser(BaseParser):
             rules[rule["id"]] = rule
 
         return rules
+
+
+    def _get_severity(
+        self,
+        result: Dict,
+        rule_id: str,
+        rules: Dict[str, Dict]
+    ) -> Optional[str]:
+        """
+        Get severity from SARIF result level (§3.27.10).
+        First checks result's level, then falls back to rule's
+        defaultConfiguration.level (§3.49.3).
+        """
+        # Check result's level first
+        level = result.get("level")
+
+        # Fall back to rule's defaultConfiguration.level
+        if level is None and rule_id in rules:
+            rule = rules[rule_id]
+            default_config = rule.get("defaultConfiguration", {})
+            level = default_config.get("level")
+
+        if level is None:
+            return None
+
+        return SARIF_LEVEL_TO_SEVERITY.get(level)
 
     def _get_analyzer_name(self, data: Dict) -> str:
         """ Get analyzer name from SARIF report. """
