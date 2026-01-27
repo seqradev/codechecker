@@ -233,6 +233,8 @@
 					</array>
 				</dict>
 			</array>
+			<key>severity</key>
+			<string>MEDIUM</string>
 			<key>type</key>
 			<string>gcc</string>
 		</dict>
