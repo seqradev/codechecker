@@ -162,6 +162,17 @@
             :title="item.$detectionStatusTitle"
           />
         </template>
+
+        <template #item.cwe="{ item }">
+          <a
+            v-if="item.cwe"
+            :href="getCweUrl(item.cwe)"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ item.cwe }}
+          </a>
+        </template>
       </v-data-table>
     </pane>
   </splitpanes>
@@ -287,6 +298,12 @@ export default {
           value: "testcase",
           align: "center",
           sortable: true
+        },
+        {
+          text: "CWE",
+          value: "cwe",
+          align: "center",
+          sortable: true
         }
       ],
       reports: [],
@@ -294,6 +311,7 @@ export default {
       hasTimeStamp: true,
       hasTestCase : true,
       hasChronologicalOrder: true,
+      hasCwe: true,
       selected: [],
       namespace: namespace,
       pagination: {
@@ -351,6 +369,11 @@ export default {
             !this.reportFilter.isUnique;
         }
 
+        if (header.value === "cwe") {
+          return this.hasCwe &&
+            !this.reportFilter.isUnique;
+        }
+
         return true;
       });
     },
@@ -380,7 +403,8 @@ export default {
           "sameReports": report.sameReports,
           "timestamp": report.annotations["timestamp"],
           "testcase": report.annotations["testcase"],
-          "chronological_order": report.annotations["chronological_order"]
+          "chronological_order": report.annotations["chronological_order"],
+          "cwe": report.annotations["cwe"]
         };
       });
     }
@@ -406,6 +430,9 @@ export default {
 
         this.hasChronologicalOrder =
           this.formattedReports.some(report => report["chronological_order"]);
+
+        this.hasCwe =
+          this.formattedReports.some(report => report.cwe);
       }
     }
   },
@@ -462,6 +489,15 @@ export default {
         analyzerName: analyzerName
       });
       this.checkerDocDialog = true;
+    },
+
+    getCweUrl(cwe) {
+      // Extract CWE number from strings like "CWE-79"
+      const match = cwe.match(/CWE-(\d+)/i);
+      if (match) {
+        return `https://cwe.mitre.org/data/definitions/${match[1]}.html`;
+      }
+      return null;
     },
 
     updateUrl() {
