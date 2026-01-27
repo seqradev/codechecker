@@ -86,6 +86,7 @@ class Parser(BaseParser):
                 message = self._process_message(
                     result["message"], rule_id, rules)  # §3.11
                 severity = self._get_severity(result, rule_id, rules)
+                annotations = self._get_cwe_tags(rule_id, rules)
 
                 thread_flow_info = self._process_code_flows(
                     result, rule_id, rules)
@@ -109,7 +110,8 @@ class Parser(BaseParser):
                         bug_path_events=bug_path_events,
                         bug_path_positions=thread_flow_info.bug_path_positions,
                         notes=thread_flow_info.notes,
-                        macro_expansions=thread_flow_info.macro_expansions)
+                        macro_expansions=thread_flow_info.macro_expansions,
+                        annotations=annotations)
 
                     if report.report_hash is None:
                         report.report_hash = get_report_hash(
@@ -167,6 +169,31 @@ class Parser(BaseParser):
             return None
 
         return SARIF_LEVEL_TO_SEVERITY.get(level)
+
+    def _get_cwe_tags(
+        self,
+        rule_id: str,
+        rules: Dict[str, Dict]
+    ) -> Optional[Dict[str, str]]:
+        """
+        Extract CWE tags from rule's properties.tags (§3.49.3).
+        Returns annotations dict with 'cwe' key if CWE tags are found.
+        """
+        if rule_id not in rules:
+            return None
+
+        rule = rules[rule_id]
+        properties = rule.get("properties", {})
+        tags = properties.get("tags", [])
+
+        # Filter for CWE tags (e.g., "CWE-79")
+        cwe_tags = [tag for tag in tags if tag.startswith("CWE-")]
+
+        if not cwe_tags:
+            return None
+
+        # Join multiple CWE tags with comma
+        return {"cwe": ", ".join(cwe_tags)}
 
     def _get_analyzer_name(self, data: Dict) -> str:
         """ Get analyzer name from SARIF report. """
