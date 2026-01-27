@@ -877,6 +877,16 @@ class MassStoreRun:
                         LOG.debug("Acquiring ID for checker '%s/%s' "
                                   "for the first time.", analyzer, checker)
 
+                    # Update existing checkers with severity from reports.
+                    if checker_severities:
+                        for (analyzer, checker), sev_str in \
+                                checker_severities.items():
+                            sev = ttypes.Severity._NAMES_TO_VALUES[sev_str]
+                            session.query(Checker) \
+                                .filter(Checker.analyzer_name == analyzer,
+                                        Checker.checker_name == checker) \
+                                .update({"severity": sev})
+
                     session.commit()
                     return
             except (sqlalchemy.exc.OperationalError,
