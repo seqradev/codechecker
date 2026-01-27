@@ -33,5 +33,6 @@ __allowed_types = {
 report_annotation_types = {
     "timestamp": __allowed_types["datetime"],
     "testcase": __allowed_types["string"],
-    "chronological_order": __allowed_types["integer"]
+    "chronological_order": __allowed_types["integer"],
+    "cwe": __allowed_types["string"]
 }
