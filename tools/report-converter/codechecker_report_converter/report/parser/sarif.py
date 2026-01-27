@@ -32,8 +32,8 @@ LOG = logging.getLogger('report-converter')
 # Mapping from SARIF level (§3.27.10) to CodeChecker severity.
 # SARIF levels: "error", "warning", "note", "none"
 SARIF_LEVEL_TO_SEVERITY: Dict[str, str] = {
-    "error": "HIGH",
-    "warning": "MEDIUM",
+    "error": "CRITICAL",
+    "warning": "HIGH",
     "note": "LOW",
 }
 
