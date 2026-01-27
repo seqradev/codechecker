@@ -469,6 +469,9 @@ class Parser(BaseParser):
             if report.analyzer_name:
                 diagnostic['type'] = report.analyzer_name
 
+            if report.severity:
+                diagnostic['severity'] = report.severity
+
             path = []
             if report.bug_path_positions:
                 for i in range(len(report.bug_path_positions) - 1):

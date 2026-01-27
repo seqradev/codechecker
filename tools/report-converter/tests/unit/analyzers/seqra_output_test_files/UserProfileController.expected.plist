@@ -226,6 +226,13 @@
 			</array>
 			<key>type</key>
 			<string>seqra</string>
+			<key>severity</key>
+			<string>HIGH</string>
+			<key>report-annotation</key>
+			<dict>
+				<key>cwe</key>
+				<string>CWE-79</string>
+			</dict>
 		</dict>
 	</array>
 	<key>files</key>
