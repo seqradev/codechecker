@@ -820,7 +820,11 @@ class MassStoreRun:
                 # the meantime.
                 session.rollback()
 
-    def __store_checker_identifiers(self, checkers: Set[Tuple[str, str]]):
+    def __store_checker_identifiers(
+        self,
+        checkers: Set[Tuple[str, str]],
+        checker_severities: Optional[Dict[Tuple[str, str], str]] = None
+    ):
         """
         Stores the identifiers "(analyzer, checker_name)" in the database into
         a look-up table where each unique checker is given a unique numeric
@@ -836,6 +840,10 @@ class MassStoreRun:
         of a run to reduce contention if two parallel stores, especially across
         server instances (in a distributed/load-balanced environment) want to
         store the same identifier(s).
+
+        If `checker_severities` is provided, it maps (analyzer, checker) tuples
+        to severity strings (e.g., "HIGH", "LOW"). This is used when severity
+        information is available from the reports themselves (e.g., from SARIF).
         """
         max_tries, tries, wait_time = 3, 0, timedelta(seconds=30)
         # The "fake" checker is a temporary row that is needed intermittently
@@ -844,6 +852,8 @@ class MassStoreRun:
         # 'metadata.json', or, in the worst case, there might simply not be
         # a 'metadata.json' at all in the to-be-stored structure.
         all_checkers = {FakeChecker, UnknownChecker} | checkers
+        if checker_severities is None:
+            checker_severities = {}
         while tries < max_tries:
             tries += 1
             try:
@@ -856,8 +866,12 @@ class MassStoreRun:
                                       .all()}
                     for analyzer, checker in \
                             sorted(all_checkers - known_checkers):
-                        s = self.__package_context.checker_labels \
-                            .severity(checker)
+                        # Use severity from reports if available, otherwise
+                        # fall back to checker labels.
+                        s = checker_severities.get((analyzer, checker))
+                        if not s:
+                            s = self.__package_context.checker_labels \
+                                .severity(checker)
                         s = ttypes.Severity._NAMES_TO_VALUES[s]
                         session.add(Checker(analyzer, checker, s))
                         LOG.debug("Acquiring ID for checker '%s/%s' "
@@ -1160,16 +1174,25 @@ class MassStoreRun:
         return db_report.id
 
     def __get_faked_checkers(self) \
-            -> Set[Tuple[str, str]]:
+            -> Tuple[Set[Tuple[str, str]], Dict[Tuple[str, str], str]]:
         """
         Extracts the "real" checker identifiers from the
         __reports_with_fake_checkers that might contain some yet not fully
         handled reports by __add_report(). This function does NOT touch the
         database!
+
+        Returns a tuple of (checkers, severities) where:
+        - checkers: set of (analyzer, checker_name) tuples
+        - severities: dict mapping (analyzer, checker_name) to severity string
         """
-        return set(checker_name_for_report(report)
-                   for report, _
-                   in self.__reports_with_fake_checkers.values())
+        checkers = set()
+        severities = {}
+        for report, _ in self.__reports_with_fake_checkers.values():
+            checker = checker_name_for_report(report)
+            checkers.add(checker)
+            if report.severity and checker not in severities:
+                severities[checker] = report.severity
+        return checkers, severities
 
     def __load_report_ids_for_reports_with_fake_checkers(self, session):
         """
@@ -1674,11 +1697,12 @@ class MassStoreRun:
                             self._name,
                             "Get look-up IDs for checkers not present in "
                             "'metadata.json'"):
-                        additional_checkers = self.__get_faked_checkers()
+                        additional_checkers, checker_severities = \
+                            self.__get_faked_checkers()
                         # __store_checker_identifiers() has its own
                         # TRANSACTION!
                         self.__store_checker_identifiers(
-                            additional_checkers)
+                            additional_checkers, checker_severities)
 
                 with DBSession(self.__product.session_factory) as session, \
                         RunLock(session, self._name):
