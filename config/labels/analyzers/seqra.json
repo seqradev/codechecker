@@ -1,0 +1,299 @@
+{
+  "analyzer": "seqra",
+  "labels": {
+    "java.security.avoid-implementing-custom-digests": [
+      "severity:HIGH"
+    ],
+    "java.security.insecure-resteasy-deserialization": [
+      "severity:HIGH"
+    ],
+    "java.security.overly-permissive-file-permission-inline": [
+      "severity:HIGH"
+    ],
+    "java.security.gcm-nonce-reuse": [
+      "severity:HIGH"
+    ],
+    "java.security.use-of-rc2": [
+      "severity:HIGH"
+    ],
+    "java.security.use-of-rc4": [
+      "severity:HIGH"
+    ],
+    "java.security.csrf-disabled-in-spring-app": [
+      "severity:HIGH"
+    ],
+    "java.security.java-jwt-decode-without-verify": [
+      "severity:HIGH"
+    ],
+    "java.security.dangerous-permissions": [
+      "severity:HIGH"
+    ],
+    "java.security.use-of-sha1": [
+      "severity:HIGH"
+    ],
+    "java.security.constant-db-password": [
+      "severity:CRITICAL"
+    ],
+    "java.security.bad-hexa-conversion": [
+      "severity:HIGH"
+    ],
+    "java.security.server-dangerous-object-deserialization": [
+      "severity:CRITICAL"
+    ],
+    "java.security.url-rewriting": [
+      "severity:HIGH"
+    ],
+    "java.security.java-empty-db-password": [
+      "severity:CRITICAL"
+    ],
+    "java.security.use-of-blowfish": [
+      "severity:HIGH"
+    ],
+    "java.security.insecure-jms-deserialization": [
+      "severity:HIGH"
+    ],
+    "java.security.java-anonymous-ldap": [
+      "severity:HIGH"
+    ],
+    "java.security.use-of-md5": [
+      "severity:HIGH"
+    ],
+    "java.security.use-of-default-aes": [
+      "severity:HIGH"
+    ],
+    "java.security.jjwt-none-alg": [
+      "severity:CRITICAL"
+    ],
+    "java.security.string-normalize-after-validation": [
+      "severity:HIGH"
+    ],
+    "java.security.jjwt-hs256": [
+      "severity:HIGH"
+    ],
+    "java.security.apache-rpc-enabled-extensions": [
+      "severity:HIGH"
+    ],
+    "java.security.wicket-xss": [
+      "severity:HIGH"
+    ],
+    "java.security.hardcoded-password": [
+      "severity:CRITICAL"
+    ],
+    "java.security.desede-is-deprecated": [
+      "severity:HIGH"
+    ],
+    "java.security.java-saml-ignore-comments": [
+      "severity:HIGH"
+    ],
+    "java.security.ldap-entry-poisoning": [
+      "severity:HIGH"
+    ],
+    "java.security.no-null-cipher": [
+      "severity:HIGH"
+    ],
+    "java.security.cookie-missing-httponly": [
+      "severity:HIGH"
+    ],
+    "java.security.cbc-padding-oracle": [
+      "severity:HIGH"
+    ],
+    "java.security.des-is-deprecated": [
+      "severity:HIGH"
+    ],
+    "java.security.stacktrace-printing-in-error-message": [
+      "severity:HIGH"
+    ],
+    "java.security.jwt-none-alg": [
+      "severity:CRITICAL"
+    ],
+    "java.security.aes-hardcoded-key": [
+      "severity:HIGH"
+    ],
+    "java.security.weak-ec-key-size": [
+      "severity:HIGH"
+    ],
+    "java.security.permissive-cors": [
+      "severity:HIGH"
+    ],
+    "java.security.rsa-no-padding": [
+      "severity:HIGH"
+    ],
+    "java.security.cookie-issecure-false": [
+      "severity:HIGH"
+    ],
+    "java.security.mongo-hostname-verification-disabled": [
+      "severity:HIGH"
+    ],
+    "java.security.defaulthttpclient-is-deprecated": [
+      "severity:HIGH"
+    ],
+    "java.security.unrestricted-request-mapping": [
+      "severity:HIGH"
+    ],
+    "java.security.ecb-cipher": [
+      "severity:HIGH"
+    ],
+    "java.security.hazelcast-symmetric-encryption": [
+      "severity:HIGH"
+    ],
+    "java.security.jwt-hardcoded-secret": [
+      "severity:HIGH"
+    ],
+    "java.security.default-resteasy-provider-abuse": [
+      "severity:HIGH"
+    ],
+    "java.security.unsafe-reflection-in-servlet-app": [
+      "severity:HIGH"
+    ],
+    "java.security.format-string-external-manipulation-in-spring-app": [
+      "severity:HIGH"
+    ],
+    "java.security.http-response-splitting-in-servlet-app": [
+      "severity:HIGH"
+    ],
+    "java.security.ssti-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.bean-injection": [
+      "severity:CRITICAL"
+    ],
+    "java.security.groovy-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.spring-el-injection": [
+      "severity:CRITICAL"
+    ],
+    "java.security.file-disclosure-request-dispatcher": [
+      "severity:CRITICAL"
+    ],
+    "java.security.xpath-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.unvalidated-redirect-in-servlet-app": [
+      "severity:HIGH"
+    ],
+    "java.security.xxe-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.xxe-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.mongodb-injection-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.unsafe-object-mapper-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.path-traversal-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.xss-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.unsafe-jackson-deserialization-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.sql-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.os-command-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.unsafe-jackson-deserialization-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.unsafe-reflection-in-spring-app": [
+      "severity:HIGH"
+    ],
+    "java.security.el-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.java-servlet-unsafe-snake-yaml-deserialization": [
+      "severity:CRITICAL"
+    ],
+    "java.security.format-string-external-manipulation-in-servlet-app": [
+      "severity:HIGH"
+    ],
+    "java.security.ssrf-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.java-servlet-parameter-pollution": [
+      "severity:CRITICAL"
+    ],
+    "java.security.unvalidated-redirect-in-spring-app": [
+      "severity:HIGH"
+    ],
+    "java.security.ldap-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.ldap-injection-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.os-command-injection-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.ssrf-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.spring-unsafe-snake-yaml-deserialization": [
+      "severity:CRITICAL"
+    ],
+    "java.security.xpath-injection-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.jsp-file-disclosure": [
+      "severity:CRITICAL"
+    ],
+    "java.security.http-response-splitting-in-spring-app": [
+      "severity:HIGH"
+    ],
+    "java.security.java-servlet-smtp-crlf-injection": [
+      "severity:CRITICAL"
+    ],
+    "java.security.ssti-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.mongodb-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.sql-catalog-external-manipulation-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.sql-catalog-external-manipulation-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.unsafe-object-mapper-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.seam-log-injection": [
+      "severity:CRITICAL"
+    ],
+    "java.security.ognl-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.script-engine-injection-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.sql-injection-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.xss-in-servlet-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.spring-smtp-crlf-injection": [
+      "severity:CRITICAL"
+    ],
+    "java.security.script-engine-injection-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.path-traversal-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.ognl-injection-in-spring-app": [
+      "severity:CRITICAL"
+    ],
+    "java.security.groovy-injection-in-spring-app": [
+      "severity:CRITICAL"
+    ]
+  }
+}
